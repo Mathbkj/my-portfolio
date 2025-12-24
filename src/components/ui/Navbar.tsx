@@ -1,62 +1,117 @@
 import Logo from "@/assets/logo.svg?react";
+import { useState } from "react";
 
 interface Link {
-    name: string;
-    href: string;
+  name: string;
+  href: string;
 }
 
 export function Navbar() {
-    const links: Array<Link> = [
-        { name: "Home", href: "/" },
-        { name: "About", href: "#about" },
-        { name: "Service", href: "#service" },
-        { name: "Resume", href: "#resume" },
-        { name: "Projects", href: "#projects" },
-        { name: "Contact", href: "#contact" },
-    ];
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const midPoint = Math.ceil(links.length / 2);
-    const firstHalf = links.slice(0, midPoint);
-    const secondHalf = links.slice(midPoint);
+  const links: Array<Link> = [
+    { name: "Home", href: "#" },
+    { name: "About", href: "#about" },
+    { name: "Resume", href: "#resume" },
+    { name: "Projects", href: "#projects" },
+  ];
 
-    return (
-        <nav className="w-full px-10 py-5">
-            <div className="backdrop-blur-[7.5px] bg-[#171717] border border-solid border-white flex items-center justify-between px-2.5 py-0 rounded-[50px] h-[86px]">
-                {/* First half of links */}
-                {firstHalf.map((link, index) => (
-                    <a
-                        key={link.name}
-                        href={link.href}
-                        className={`flex items-center justify-center px-10 py-5 rounded-[60px] cursor-pointer transition-colors ${index === 0
-                            ? 'bg-orange-400'
-                            : 'hover:bg-white/10'
-                            }`}
-                    >
-                        <p className={`text-md font-urbanist text-white tracking-[-0.3px] ${index === 0 ? 'font-bold' : 'font-normal'
-                            }`}>
-                            {link.name}
-                        </p>
-                    </a>
-                ))}
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
-                {/* Logo in center */}
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
 
-                <Logo />
+  return (
+    <nav className="w-full flex justify-center items-center fixed top-0 m-5 z-50">
+      {/* Desktop Navigation */}
+      <div className="hidden md:flex max-w-1/2 backdrop-blur-[7.5px] border border-solid border-white items-center justify-center px-3 py-2 gap-5 rounded-[50px]">
+        {links.map((link) => (
+          <a
+            key={link.name.toLowerCase()}
+            href={link.href}
+            className="font-urbanist text-black/40 hover:text-black transition-colors"
+          >
+            {link.name}
+          </a>
+        ))}
+      </div>
 
+      {/* Mobile Navigation */}
+      <div className="md:hidden w-full px-4">
+        {/* Mobile Menu Button */}
+        <button
+          onClick={toggleMenu}
+          className="backdrop-blur-[7.5px] border border-solid border-white p-3 rounded-full ml-auto block transition-transform duration-300 hover:scale-110"
+          aria-label="Toggle menu"
+        >
+          <div className="relative w-6 h-6">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className={`h-6 w-6 absolute transition-all duration-300 ${
+                isMenuOpen ? "rotate-90 opacity-0" : "rotate-0 opacity-100"
+              }`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className={`h-6 w-6 absolute transition-all duration-300 ${
+                isMenuOpen ? "rotate-0 opacity-100" : "-rotate-90 opacity-0"
+              }`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </div>
+        </button>
 
-                {/* Second half of links */}
-                {secondHalf.map((link) => (
-                    <a
-                        key={link.name}
-                        href={link.href}
-                        className="flex items-center justify-center px-10 py-5 rounded-[60px] cursor-pointer hover:bg-white/10 transition-colors"
-                    >
-                        <p className="text-md font-urbanist text-white tracking-[-0.3px] font-normal">
-                            {link.name}
-                        </p>
-                    </a>
-                ))}
-            </div>
-        </nav>
-    );
+        {/* Mobile Menu Dropdown */}
+        <div
+          className={`absolute top-16 right-4 backdrop-blur-[7.5px] border border-solid border-white rounded-2xl py-4 px-6 shadow-lg transition-all duration-300 origin-top-right ${
+            isMenuOpen
+              ? "opacity-100 scale-100"
+              : "opacity-0 scale-95 pointer-events-none"
+          }`}
+        >
+          <div className="flex flex-col gap-4">
+            {links.map((link, index) => (
+              <a
+                key={link.name.toLowerCase()}
+                href={link.href}
+                onClick={closeMenu}
+                className={`font-urbanist text-black/40 hover:text-black transition-all duration-300 ${
+                  isMenuOpen
+                    ? "translate-x-0 opacity-100"
+                    : "translate-x-2 opacity-0"
+                }`}
+                style={{
+                  transitionDelay: isMenuOpen ? `${index * 50}ms` : "0ms",
+                }}
+              >
+                {link.name}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
 }

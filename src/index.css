@@ -4,32 +4,20 @@
   font-optical-sizing: auto !important;
   overflow-x: hidden !important;
 }
+* {
+  scroll-behavior: smooth !important;
+}
 @theme {
   --font-urbanist: "Urbanist", sans-serif;
-
-  /* Float animations with random delays and durations */
-  --animate-float-1: float 18s 0s linear infinite;
-  --animate-float-2: float 25s 1.2s linear infinite;
-  --animate-float-3: float 32s 2.8s linear infinite;
-  --animate-float-4: float 22s 0.5s linear infinite;
-  --animate-float-5: float 28s 3.5s linear infinite;
-  --animate-float-6: float 35s 1.8s linear infinite;
-  --animate-float-7: float 20s 4.2s linear infinite;
-  --animate-float-8: float 30s 0.9s linear infinite;
-  --animate-float-9: float 26s 2.3s linear infinite;
-  --animate-float-10: float 38s 1.5s linear infinite;
-  --animate-float-11: float 24s 3.1s linear infinite;
-  --animate-float-12: float 33s 0.7s linear infinite;
-  --animate-float-13: float 21s 2.6s linear infinite;
-  --animate-float-14: float 29s 4s linear infinite;
-  --animate-float-15: float 36s 1.1s linear infinite;
-
-  @keyframes float {
+  --animate-fadeInUp: fadeInUp 0.5s ease-in-out forwards;
+  @keyframes fadeInUp {
     0% {
-      transform: translateY(0px);
+      opacity: 0;
+      transform: translateY(20px);
     }
     100% {
-      transform: translateY(-1000px);
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 }
